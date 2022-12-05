@@ -1,5 +1,5 @@
 def test_example1():
-    with open("./day3/example.txt") as f:
+    with open("./day03/example.txt") as f:
         example = f.read()
 
     output = solution1(example)
@@ -7,7 +7,7 @@ def test_example1():
     assert output == 157
 
 def test_example2():
-    with open("./day3/example.txt") as f:
+    with open("./day03/example.txt") as f:
         example = f.read()
 
     output = solution2(example)
@@ -52,8 +52,8 @@ def solution2(contents: str):
 
 
 if __name__ == "__main__":
-    with open("./day3/input.txt") as f:
+    with open("./day03/input.txt") as f:
         print(solution1(f.read()))
 
-    with open("./day3/input.txt") as f:
+    with open("./day03/input.txt") as f:
         print(solution2(f.read()))

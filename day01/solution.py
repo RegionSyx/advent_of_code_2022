@@ -95,8 +95,8 @@ def solution2(calories: str):
     return sum(list(reversed(sorted(elves_calories)))[:3])
 
 if __name__ == "__main__":
-    with open("./day1/input.txt") as f:
+    with open("./day01/input.txt") as f:
         print(solution1(f.read()))
 
-    with open("./day1/input.txt") as f:
+    with open("./day01/input.txt") as f:
         print(solution2(f.read()))

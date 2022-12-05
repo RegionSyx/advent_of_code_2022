@@ -83,8 +83,8 @@ def solution2(guide: str):
     return score
 
 if __name__ == "__main__":
-    with open("./day2/input.txt") as f:
+    with open("./day02/input.txt") as f:
         print(solution1(f.read()))
 
-    with open("./day2/input.txt") as f:
+    with open("./day02/input.txt") as f:
         print(solution2(f.read()))
