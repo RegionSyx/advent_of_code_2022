@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional, Union
+from typing import List, Optional, Set, Union
 
 
 def test_example1():
@@ -13,12 +13,12 @@ def test_example2():
 
 
 
-@dataclass
+@dataclass(frozen=True)
 class Dir:
     name: str
     parent: Optional['Dir']
 
-@dataclass
+@dataclass(frozen=True)
 class File:
     name: str
     size: int
@@ -30,8 +30,8 @@ def create_file_tree(lines):
 
     current_dir: List[Dir] = [root]
 
-    dirs: List[Dir] = []
-    files: List[File] = []
+    dirs: Set[Dir] = set()
+    files: Set[File] = set()
 
     current_line = 0
     while current_line < len(lines):
@@ -54,11 +54,9 @@ def create_file_tree(lines):
                 while current_line < len(lines) and parts[0] != '$':
                     
                     if parts[0] == 'dir':
-                        if len([x for x in dirs if x.name == parts[1] and x.parent == current_dir[-1]] ) == 0:
-                            dirs.append(Dir(name=parts[1], parent=current_dir[-1]))
+                        dirs.add(Dir(name=parts[1], parent=current_dir[-1]))
                     else:
-                        if len([x for x in files if x.name == parts[1] and x.parent == current_dir[-1]]) == 0:
-                            files.append(File(name=parts[1], size=int(parts[0]), parent=current_dir[-1]))
+                        files.add(File(name=parts[1], size=int(parts[0]), parent=current_dir[-1]))
                     
                     current_line += 1
 
