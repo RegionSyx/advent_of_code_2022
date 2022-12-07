@@ -43,9 +43,8 @@ def create_file_tree(lines):
                 elif parts[2] == '..':
                     current_dir = current_dir[:-1]
                 else:
-                    possible_dirs = [x for x in dirs if x.name == current_dir[-1].name + '/' + parts[2]]
+                    possible_dirs = [x for x in dirs if x.name == parts[2] and x.parent == current_dir[-1]]
                     if len(possible_dirs) != 1:
-                        print(possible_dirs)
                         raise Exception("Multiple dirs found")
                     current_dir.append(possible_dirs[0])
                 current_line += 1
@@ -55,11 +54,11 @@ def create_file_tree(lines):
                 while current_line < len(lines) and parts[0] != '$':
                     
                     if parts[0] == 'dir':
-                        if len([x for x in dirs if x.name == current_dir[-1].name + '/' + parts[1]]) == 0:
-                            dirs.append(Dir(name=current_dir[-1].name + '/' + parts[1], parent=current_dir[-1]))
+                        if len([x for x in dirs if x.name == parts[1] and x.parent == current_dir[-1]] ) == 0:
+                            dirs.append(Dir(name=parts[1], parent=current_dir[-1]))
                     else:
-                        if len([x for x in files if x.name == current_dir[-1].name + '/' +parts[1]]) == 0:
-                            files.append(File(name=current_dir[-1].name + '/' + parts[1], size=int(parts[0]), parent=current_dir[-1]))
+                        if len([x for x in files if x.name == parts[1] and x.parent == current_dir[-1]]) == 0:
+                            files.append(File(name=parts[1], size=int(parts[0]), parent=current_dir[-1]))
                     
                     current_line += 1
 
