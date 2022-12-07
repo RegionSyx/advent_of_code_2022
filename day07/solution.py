@@ -34,7 +34,6 @@ def create_file_tree(lines):
     files: List[File] = []
 
     current_line = 0
-    #import pdb; pdb.set_trace()
     while current_line < len(lines):
         parts = lines[current_line].strip().split(' ')
         match parts[1]:
