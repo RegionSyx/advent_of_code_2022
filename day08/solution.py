@@ -61,6 +61,7 @@ def solution2(lines):
             tree_scores.append(score)
     return  max(tree_scores)
 
+
 if __name__ == "__main__":
     with open('./day08/input.txt') as f:
         print(solution1(f.readlines()))
