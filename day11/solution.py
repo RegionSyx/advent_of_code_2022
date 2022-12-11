@@ -5,33 +5,31 @@ from typing import List, Callable, Tuple, Union
 @dataclass
 class Monkey:
     items: List[int]
-    operation: Tuple[str, int]
-    test: Tuple[int, int, int]
+    operation: Tuple[str, int] = ('', 0)
+    test: Tuple[int, int, int] = (0, 0, 0)
 
 
-def _parse_monkeys(_input):
-    monkeys = []
+def _parse_monkeys(_input: str) -> List[Monkey]:
+    monkeys : List[Monkey] = []
     for monkey in _input.split('\n\n'):
         lines = monkey.splitlines()
-        monkey_items = []
-        operation = ('noop', 0)
-        quo, true_case, false_case = 0, 0, 0
+        m = Monkey([])
         for l in lines:
             match l.split():
                 case ["Starting", "items:", *items]:
-                    monkey_items = [int(x.strip()) for x in ''.join(items).split(',')]
+                    m.items = [int(x.strip()) for x in ''.join(items).split(',')]
                 case ["Operation:", "new", "=", "old", "*", "old"]:
-                    operation = ("**", 2)
+                    m.operation = ("**", 2)
                 case ["Operation:", "new", "=", "old", op, num]:
-                    operation = (op, int(num))
+                    m.operation = (op, int(num))
                 case ["Test:", "divisible", "by", num]:
-                    quo = int(num)
+                    m.test = (int(num), m.test[1], m.test[2])
                 case ["If", 'true:', "throw", "to", "monkey", num]:
-                    true_case = int(num)
+                    m.test = (m.test[0], int(num), m.test[2])
                 case ["If", 'false:', "throw", "to", "monkey", num]:
-                    false_case = int(num)
+                    m.test = (m.test[0], m.test[1], int(num))
 
-        monkeys.append(Monkey(monkey_items, operation, (quo, true_case, false_case)))
+        monkeys.append(m)
 
     return monkeys
 
