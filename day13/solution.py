@@ -13,7 +13,7 @@ def compare(left, right):
         return compare([left], right)
     elif isinstance(left, list) and isinstance(right, int):
         return compare(left, [right])
-    else:
+    elif isinstance(left, list) and isinstance(right, list):
         for l, r in zip(left, right):
             if compare(l, r) is None:
                 continue
