@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass(frozen=True)
 class Vec2D:
     x: int
@@ -22,19 +23,19 @@ def solution1(lines):
     scan = {}
     starting_pos = Vec2D(500, 0)
     for l in lines:
-        path = [Vec2D(*map(int, x.strip().split(','))) for x in l.split('->')]
+        path = [Vec2D(*map(int, x.strip().split(","))) for x in l.split("->")]
         for i in range(len(path) - 1):
-            start, end = path[i], path[i+1]
+            start, end = path[i], path[i + 1]
 
             if start.y == end.y:
                 for x in range(min(start.x, end.x), max(end.x, start.x) + 1):
-                    scan[Vec2D(x, start.y)] = '#'
+                    scan[Vec2D(x, start.y)] = "#"
 
             if start.x == end.x:
                 for y in range(min(start.y, end.y), max(end.y, start.y) + 1):
-                    scan[Vec2D(start.x, y)] = '#'
+                    scan[Vec2D(start.x, y)] = "#"
 
-    scan[starting_pos] = 'S'
+    scan[starting_pos] = "S"
     bounds = (
         min(v.x for v in scan.keys()),
         min(v.y for v in scan.keys()),
@@ -62,11 +63,11 @@ def solution1(lines):
             current_pos += downright
             continue
         else:
-            scan[current_pos] = 'o'
+            scan[current_pos] = "o"
             sand_counter += 1
             current_pos = starting_pos
             continue
-   
+
     return sand_counter - 1
 
 
@@ -74,19 +75,19 @@ def solution2(lines):
     scan = {}
     starting_pos = Vec2D(500, 0)
     for l in lines:
-        path = [Vec2D(*map(int, x.strip().split(','))) for x in l.split('->')]
+        path = [Vec2D(*map(int, x.strip().split(","))) for x in l.split("->")]
         for i in range(len(path) - 1):
-            start, end = path[i], path[i+1]
+            start, end = path[i], path[i + 1]
 
             if start.y == end.y:
                 for x in range(min(start.x, end.x), max(end.x, start.x) + 1):
-                    scan[Vec2D(x, start.y)] = '#'
+                    scan[Vec2D(x, start.y)] = "#"
 
             if start.x == end.x:
                 for y in range(min(start.y, end.y), max(end.y, start.y) + 1):
-                    scan[Vec2D(start.x, y)] = '#'
+                    scan[Vec2D(start.x, y)] = "#"
 
-    scan[starting_pos] = 'S'
+    scan[starting_pos] = "S"
     bounds = (
         min(v.x for v in scan.keys()),
         min(v.y for v in scan.keys()),
@@ -102,7 +103,7 @@ def solution2(lines):
     downright = Vec2D(1, 1)
     while True:
         if current_pos.y >= bounds[3] + 1:
-            scan[current_pos] = 'o'
+            scan[current_pos] = "o"
             sand_counter += 1
             current_pos = starting_pos
             continue
@@ -119,22 +120,23 @@ def solution2(lines):
         elif current_pos == starting_pos:
             break
         else:
-            scan[current_pos] = 'o'
+            scan[current_pos] = "o"
             sand_counter += 1
             current_pos = starting_pos
             continue
-   
+
     return sand_counter
 
 
 def test_example1():
-    example="""498,4 -> 498,6 -> 496,6
+    example = """498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9
 """
     assert solution1(example.splitlines()) == 24
 
+
 def test_example2():
-    example="""498,4 -> 498,6 -> 496,6
+    example = """498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9
 """
     assert solution2(example.splitlines()) == 93

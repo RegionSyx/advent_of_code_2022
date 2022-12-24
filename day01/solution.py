@@ -32,6 +32,7 @@ def test_complex_case():
 
     assert solution1(calories) == (3, 12000)
 
+
 def test_solution2_example():
     calories = """1000
 2000
@@ -65,7 +66,7 @@ def solution1(calories: str):
             if current_calories > max_calories:
                 max_elf = current_elf
                 max_calories = current_calories
-            
+
             current_calories = 0
             current_elf += 1
         else:
@@ -73,6 +74,7 @@ def solution1(calories: str):
             current_calories += cals
 
     return max_elf, max_calories
+
 
 def solution2(calories: str):
     lines = calories.splitlines()
@@ -91,8 +93,8 @@ def solution2(calories: str):
         if current_calories > 0:
             elves_calories.append(current_calories)
 
-
     return sum(list(reversed(sorted(elves_calories)))[:3])
+
 
 if __name__ == "__main__":
     with open("./day01/input.txt") as f:

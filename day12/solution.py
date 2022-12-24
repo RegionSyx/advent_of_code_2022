@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from itertools import product
 from typing import Dict
 
+
 @dataclass(frozen=True)
 class Vec2D:
     x: int
@@ -27,12 +28,12 @@ def solution(lines):
 
     for row, l in enumerate(lines):
         for col, c in enumerate(l):
-            if c == 'S':
+            if c == "S":
                 starting_pos = Vec2D(row, col)
-                topo_map[Vec2D(row, col)] = ord('a')
-            elif c == 'E':
+                topo_map[Vec2D(row, col)] = ord("a")
+            elif c == "E":
                 ending_pos = Vec2D(row, col)
-                topo_map[Vec2D(row, col)] = ord('z')
+                topo_map[Vec2D(row, col)] = ord("z")
             else:
                 topo_map[Vec2D(row, col)] = ord(c)
 
@@ -45,7 +46,13 @@ def solution(lines):
     while ending_pos not in heads:
         steps += 1
         visited |= heads
-        neighbors = (set(topo_map.keys()) - visited) & {pos + Vec2D(x, y) for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)] for pos in heads if (pos + Vec2D(x, y) in topo_map) and topo_map[pos + Vec2D(x, y)] <= topo_map[pos] + 1}
+        neighbors = (set(topo_map.keys()) - visited) & {
+            pos + Vec2D(x, y)
+            for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            for pos in heads
+            if (pos + Vec2D(x, y) in topo_map)
+            and topo_map[pos + Vec2D(x, y)] <= topo_map[pos] + 1
+        }
         heads = neighbors
     return steps
 
@@ -58,7 +65,9 @@ def solution(lines):
         new_map = _map.copy()
         del new_map[pos]
 
-        neighbors = set(_map.keys()) & {pos + Vec2D(x, y) for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]}
+        neighbors = set(_map.keys()) & {
+            pos + Vec2D(x, y) for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        }
         results = []
         for n in neighbors:
             if _map[n] <= current_height + 1:
@@ -69,6 +78,7 @@ def solution(lines):
 
     return walk(starting_pos, topo_map, 0)
 
+
 def solution2(lines):
     topo_map = {}
     starting_positions = []
@@ -76,33 +86,37 @@ def solution2(lines):
 
     for row, l in enumerate(lines):
         for col, c in enumerate(l):
-            if c == 'S':
+            if c == "S":
                 starting_positions.append(Vec2D(row, col))
-                topo_map[Vec2D(row, col)] = ord('a')
-            elif c == 'E':
+                topo_map[Vec2D(row, col)] = ord("a")
+            elif c == "E":
                 ending_pos = Vec2D(row, col)
-                topo_map[Vec2D(row, col)] = ord('z')
-            elif c == 'a':
+                topo_map[Vec2D(row, col)] = ord("z")
+            elif c == "a":
                 starting_positions.append(Vec2D(row, col))
-                topo_map[Vec2D(row, col)] = ord('a')
+                topo_map[Vec2D(row, col)] = ord("a")
             else:
                 topo_map[Vec2D(row, col)] = ord(c)
 
-    
     steps = 0
     heads = set(starting_positions)
     visited = set(starting_positions)
     while ending_pos not in heads:
         steps += 1
         visited |= heads
-        neighbors = (set(topo_map.keys()) - visited) & {pos + Vec2D(x, y) for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)] for pos in heads if (pos + Vec2D(x, y) in topo_map) and topo_map[pos + Vec2D(x, y)] <= topo_map[pos] + 1}
+        neighbors = (set(topo_map.keys()) - visited) & {
+            pos + Vec2D(x, y)
+            for x, y in [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            for pos in heads
+            if (pos + Vec2D(x, y) in topo_map)
+            and topo_map[pos + Vec2D(x, y)] <= topo_map[pos] + 1
+        }
         heads = neighbors
     return steps
 
 
-
 def test_example1():
-    example="""Sabqponm
+    example = """Sabqponm
 abcryxxl
 accszExk
 acctuvwj
@@ -111,8 +125,9 @@ abdefghi
 
     assert solution(example) == 31
 
+
 def test_example2():
-    example="""Sabqponm
+    example = """Sabqponm
 abcryxxl
 accszExk
 acctuvwj
@@ -121,9 +136,10 @@ abdefghi
 
     assert solution2(example) == 29
 
+
 if __name__ == "__main__":
-    with open('./day12/input.txt') as f:
+    with open("./day12/input.txt") as f:
         print(solution(f.readlines()))
 
-    with open('./day12/input.txt') as f:
+    with open("./day12/input.txt") as f:
         print(solution2(f.readlines()))

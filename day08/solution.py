@@ -1,5 +1,3 @@
-
-
 def solution1(lines):
     tree_map = [list(map(int, l.strip())) for l in lines]
     print(tree_map)
@@ -46,6 +44,7 @@ def _scenic_score(trees):
 
     return max(score, 1)
 
+
 def solution2(lines):
     tree_map = [list(map(int, l.strip())) for l in lines]
     tree_scores = []
@@ -53,17 +52,19 @@ def solution2(lines):
     for x in range(len(tree_map[0])):
         for y in range(len(tree_map)):
             score = (
-                _scenic_score(list(reversed(tree_map[y][:x+1]))) * # left
-                _scenic_score(tree_map[y][x:]) * # right
-                _scenic_score([t[x] for t in list(reversed(tree_map[:y+1]))]) * # up
-                _scenic_score([t[x] for t in tree_map[y:]]) # down
+                _scenic_score(list(reversed(tree_map[y][: x + 1])))
+                * _scenic_score(tree_map[y][x:])  # left
+                * _scenic_score(  # right
+                    [t[x] for t in list(reversed(tree_map[: y + 1]))]
+                )
+                * _scenic_score([t[x] for t in tree_map[y:]])  # up  # down
             )
             tree_scores.append(score)
-    return  max(tree_scores)
+    return max(tree_scores)
 
 
 if __name__ == "__main__":
-    with open('./day08/input.txt') as f:
+    with open("./day08/input.txt") as f:
         print(solution1(f.readlines()))
-    with open('./day08/input.txt') as f:
+    with open("./day08/input.txt") as f:
         print(solution2(f.readlines()))

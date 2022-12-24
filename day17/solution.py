@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from tqdm import tqdm
 from collections import defaultdict
+
+
 @dataclass(frozen=True)
 class Vec2D:
     x: int
@@ -31,7 +33,7 @@ def rocks():
 def jets(moves):
     while True:
         yield from list(moves)
-        
+
 
 def solution1(moves):
     moves = moves.strip()
@@ -43,18 +45,27 @@ def solution1(moves):
     stopped_rocks = 0
 
     while stopped_rocks < 2022:
-   
+
         match next(jets_gen):
             case "<":
                 if current_pos.x > 0:
-                    if not fallen & set(current_pos + x for x in [y + Vec2D(-1, 0) for y in current_rock]):
+                    if not fallen & set(
+                        current_pos + x
+                        for x in [y + Vec2D(-1, 0) for y in current_rock]
+                    ):
                         current_pos += Vec2D(-1, 0)
             case ">":
                 if current_pos.x + max(v.x for v in current_rock) < 6:
-                    if not fallen & set(current_pos + x for x in [y + Vec2D(1, 0) for y in current_rock]):
+                    if not fallen & set(
+                        current_pos + x for x in [y + Vec2D(1, 0) for y in current_rock]
+                    ):
                         current_pos += Vec2D(1, 0)
 
-        if not fallen & set(current_pos + x for x in [y + Vec2D(0, -1) for y in current_rock]) and current_pos.y > 0:
+        if (
+            not fallen
+            & set(current_pos + x for x in [y + Vec2D(0, -1) for y in current_rock])
+            and current_pos.y > 0
+        ):
             current_pos += Vec2D(0, -1)
         else:
             for r in current_rock:
@@ -64,6 +75,7 @@ def solution1(moves):
             stopped_rocks += 1
 
     return max(v.y for v in fallen) + 1
+
 
 def solution2(moves, num):
     moves = moves.strip()
@@ -77,20 +89,30 @@ def solution2(moves, num):
     floor = -1
     total_moves = 0
     cycles = defaultdict(list)
-    with tqdm(total = num) as pbar:
+    with tqdm(total=num) as pbar:
         while stopped_rocks < num:
-            
+
             match next(jets_gen):
                 case "<":
                     if current_pos.x > 0:
-                        if not fallen & set(current_pos + x for x in [y + Vec2D(-1, 0) for y in current_rock]):
+                        if not fallen & set(
+                            current_pos + x
+                            for x in [y + Vec2D(-1, 0) for y in current_rock]
+                        ):
                             current_pos += Vec2D(-1, 0)
                 case ">":
                     if current_pos.x + max(v.x for v in current_rock) < 6:
-                        if not fallen & set(current_pos + x for x in [y + Vec2D(1, 0) for y in current_rock]):
+                        if not fallen & set(
+                            current_pos + x
+                            for x in [y + Vec2D(1, 0) for y in current_rock]
+                        ):
                             current_pos += Vec2D(1, 0)
             total_moves += 1
-            if not fallen & set(current_pos + x for x in [y + Vec2D(0, -1) for y in current_rock]) and current_pos.y - 1 > floor:
+            if (
+                not fallen
+                & set(current_pos + x for x in [y + Vec2D(0, -1) for y in current_rock])
+                and current_pos.y - 1 > floor
+            ):
                 current_pos += Vec2D(0, -1)
             else:
                 for r in current_rock:
@@ -100,9 +122,10 @@ def solution2(moves, num):
                 current_pos = Vec2D(2, highest_stopped + 4)
                 stopped_rocks += 1
                 pbar.update(1)
-                cycles[(total_moves % len(moves), stopped_rocks % 5)].append((stopped_rocks, highest_stopped))
+                cycles[(total_moves % len(moves), stopped_rocks % 5)].append(
+                    (stopped_rocks, highest_stopped)
+                )
 
-                        
             if stopped_rocks % 100000 == 0:
                 for y in range(floor, highest_stopped + 1):
                     if len([v for v in fallen if v.y == y]) == 7:
@@ -112,9 +135,13 @@ def solution2(moves, num):
 
     cycles = {k: v for k, v in cycles.items() if len(v) > 1}
 
-    valid_cycles = {k: v for k, v in cycles.items() if 1000000000000 % (v[1][0] - v[0][0]) == v[0][0] % (v[1][0] - v[0][0])}
+    valid_cycles = {
+        k: v
+        for k, v in cycles.items()
+        if 1000000000000 % (v[1][0] - v[0][0]) == v[0][0] % (v[1][0] - v[0][0])
+    }
     valid_cycle = valid_cycles[list(valid_cycles.keys())[0]]
-    
+
     w = valid_cycle[1][0] - valid_cycle[0][0]
     h = valid_cycle[1][1] - valid_cycle[0][1]
     n = 1000000000000 // w
@@ -125,14 +152,14 @@ def solution2(moves, num):
 
 
 def test_example1():
-    example = '>>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>'
+    example = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>"
 
     assert solution1(example) == 3068
 
 
-if __name__ == '__main__':
-    with open('./day17/input.txt') as f:
+if __name__ == "__main__":
+    with open("./day17/input.txt") as f:
         print(solution1(f.read()))
 
-    with open('./day17/input.txt') as f:
+    with open("./day17/input.txt") as f:
         print(solution2(f.read(), 5000))

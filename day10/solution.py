@@ -4,16 +4,16 @@ def solution1(lines):
 
     for line in lines:
         match line.split():
-            case ['addx', num]:
+            case ["addx", num]:
                 cycle_values.append(X)
                 X += int(num)
                 cycle_values.append(X)
-            case ['noop']:
+            case ["noop"]:
                 cycle_values.append(X)
-
 
     signals = [x[0] * x[1] for x in enumerate(cycle_values, start=1)]
     return sum(x for x in signals[19:220:40])
+
 
 def solution2(lines):
     X = 1
@@ -21,11 +21,11 @@ def solution2(lines):
 
     for line in lines:
         match line.split():
-            case ['addx', num]:
+            case ["addx", num]:
                 cycle_values.append(X)
                 X += int(num)
                 cycle_values.append(X)
-            case ['noop']:
+            case ["noop"]:
                 cycle_values.append(X)
 
     output = ""
